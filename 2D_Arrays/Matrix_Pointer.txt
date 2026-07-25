@@ -1,0 +1,302 @@
+In C++, a matrix pointer usually means a pointer used to access a 2D array (matrix). There are several ways to use pointers with matrices.
+
+==========================================================================================
+
+1. Pointer to a Fixed-Size 2D Array:-
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    int matrix[3][4] = {
+        {1, 2, 3, 4},
+        {5, 6, 7, 8},
+        {9, 10, 11, 12}
+    };
+
+    int (*ptr)[4] = matrix;   // Pointer to an array of 4 integers
+
+    cout << ptr[1][2] << endl;    // Output: 7
+}
+
+Explanation:-
+
+matrix has type int[3][4].
+
+ptr is declared as:
+
+int (*ptr)[4];
+
+which means pointer to an array of 4 integers.
+
+=======================================================================================
+
+2. Access Elements Using Pointer Arithmetic:-
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    int matrix[2][3] = {
+        {1, 2, 3},
+        {4, 5, 6}
+    };
+
+    int (*ptr)[3] = matrix;
+
+    cout << *(*(ptr + 1) + 2);   // Output: 6
+}
+
+How it works:-
+
+ptr + 1 → second row
+*(ptr + 1) → address of first element of second row
++2 → third element
+* → value (6)
+
+==========================================================================================
+
+3. Pointer to the First Element:-
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    int matrix[2][3] = {
+        {1,2,3},
+        {4,5,6}
+    };
+
+    int *ptr = &matrix[0][0];
+
+    for(int i = 0; i < 6; i++)
+        cout << *(ptr + i) << " ";
+}
+
+Output:
+
+1 2 3 4 5 6
+
+This works because a 2D array is stored in row-major order.
+
+=========================================================================================
+
+4. Dynamically Allocated Matrix:-
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    int rows = 3, cols = 4;
+
+    int **matrix = new int*[rows];
+
+    for(int i = 0; i < rows; i++)
+        matrix[i] = new int[cols];
+
+    // Fill matrix
+    int value = 1;
+    for(int i = 0; i < rows; i++)
+        for(int j = 0; j < cols; j++)
+            matrix[i][j] = value++;
+
+    // Print matrix
+    for(int i = 0; i < rows; i++) {
+        for(int j = 0; j < cols; j++)
+            cout << matrix[i][j] << " ";
+        cout << endl;
+    }
+
+    // Free memory
+    for(int i = 0; i < rows; i++)
+        delete[] matrix[i];
+
+    delete[] matrix;
+}
+
+Important Pointer Declarations:-
+
+Declaration	Meaning:
+
+int matrix[3][4];	3×4 matrix
+int (*ptr)[4];	Pointer to a row (array of 4 ints)
+int *ptr = &matrix[0][0];	Pointer to the first element
+int **ptr;	Pointer to pointer (commonly used for dynamically allocated matrices)
+
+Interview Question:-
+
+Why can't we write?
+
+int *ptr = matrix;
+
+Because matrix decays to a pointer to its first row, whose type is int (*)[4], not int*. The correct declaration is:
+
+int (*ptr)[4] = matrix;
+
+unless you specifically want a pointer to the first element:
+
+int *ptr = &matrix[0][0];
+
+This distinction is a very common C++ interview question.
+
+=======================================================================================
+
+theory:-
+
+Matrix Pointer (Theory in C++)
+
+A matrix pointer is a pointer used to access the elements of a 2D array (matrix). Since a matrix is an array of arrays, pointers behave slightly differently than they do with a 1D array.
+
+1. What is a Matrix?
+
+A matrix is a two-dimensional array.
+
+int matrix[3][4];
+3 → Number of rows
+4 → Number of columns
+
+Memory representation:
+
+1   2   3   4
+5   6   7   8
+9  10  11  12
+
+The elements are stored row by row (row-major order).
+
+2. How Does a Matrix Name Behave?
+
+For a 1D array:
+
+int arr[5];
+
+arr points to the first element.
+
+Type:
+
+int *
+
+For a 2D array:
+
+int matrix[3][4];
+
+matrix points to the first row, not the first element.
+
+Type:
+
+int (*)[4]
+
+which means pointer to an array of 4 integers.
+
+3. Pointer to a Matrix
+
+Declaration:
+
+int (*ptr)[4] = matrix;
+
+Read it from inside out:
+
+ptr → pointer
+*ptr
+(*ptr)[4] → pointer to an array of 4 integers
+4. Why Not int *ptr = matrix?
+
+Because:
+
+matrix
+
+is not of type int*.
+
+It is of type:
+
+int (*)[4]
+
+A row is an array of 4 integers, so the pointer must also point to an array of 4 integers.
+
+5. Accessing Elements
+
+Suppose
+
+int matrix[3][4];
+int (*ptr)[4] = matrix;
+
+Then
+
+Expression	Meaning
+ptr	Address of first row
+ptr + 1	Address of second row
+*ptr	First row
+(*ptr)[2]	Third element of first row
+ptr[1][3]	Fourth element of second row
+*(*(ptr+2)+1)	Second element of third row
+6. Pointer Arithmetic
+
+If the matrix has 4 columns:
+
+ptr + 1
+
+moves to the next row.
+
+It skips:
+
+4 × sizeof(int)
+
+bytes.
+
+Unlike int*, which moves by one integer, a matrix pointer moves by one entire row.
+
+7. Memory Layout
+
+For
+
+int matrix[3][4];
+
+Memory:
+
+Row 0 → 1 2 3 4
+Row 1 → 5 6 7 8
+Row 2 → 9 10 11 12
+
+Addresses:
+
+matrix
+   ↓
++-----+-----+-----+-----+
+|  1  |  2  |  3  |  4  |
++-----+-----+-----+-----+
+|  5  |  6  |  7  |  8  |
++-----+-----+-----+-----+
+|  9  | 10  | 11  | 12  |
++-----+-----+-----+-----+
+
+ptr → First row
+ptr+1 → Second row
+ptr+2 → Third row
+8. Difference Between int* and Matrix Pointer
+int*	int (*)[4]
+Points to one integer	Points to one row
+Increments by one integer	Increments by one complete row
+Used for 1D arrays	Used for 2D arrays
+9. Pointer to the First Element
+
+If you want a pointer to the very first element instead of the first row:
+
+int *ptr = &matrix[0][0];
+
+Now pointer arithmetic moves one element at a time.
+
+10. Key Interview Points
+A 2D array is an array of arrays.
+The name of a 2D array decays to a pointer to its first row.
+Type of matrix is int (*)[columns].
+Use int (*ptr)[columns] to point to a 2D array.
+A matrix pointer increments by one row, not one element.
+Elements can be accessed using either ptr[i][j] or pointer arithmetic like *(*(ptr+i)+j).
+Formula to Remember
+
+For a matrix declared as:
+
+int matrix[ROWS][COLS];
+Matrix type: int [ROWS][COLS]
+Matrix decays to: int (*)[COLS]
+Pointer declaration:
+int (*ptr)[COLS] = matrix;
