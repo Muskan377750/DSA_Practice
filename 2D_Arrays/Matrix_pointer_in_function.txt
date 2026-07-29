@@ -1,0 +1,170 @@
+When a matrix is passed to a function in C++, it is actually passed as a pointer to its first row. This is why the number of columns must be specified in the function parameter.
+
+===========================================================================================
+
+Syntax:-
+
+returnType functionName(int arr[][COLS], int rows)
+{
+    // Function body
+}
+
+or equivalently,
+
+returnType functionName(int (*arr)[COLS], int rows)
+{
+    // Function body
+}
+
+Both declarations mean the same thing.
+
+============================================================================================
+
+Example 1: Print a Matrix:-
+
+#include <iostream>
+using namespace std;
+
+void printMatrix(int arr[][3], int rows)
+{
+    for(int i = 0; i < rows; i++)
+    {
+        for(int j = 0; j < 3; j++)
+        {
+            cout << arr[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+
+int main()
+{
+    int matrix[2][3] = {
+        {1, 2, 3},
+        {4, 5, 6}
+    };
+
+    printMatrix(matrix, 2);
+
+    return 0;
+}
+
+Output:-
+1 2 3
+4 5 6
+
+===============================================================================================
+
+Example 2: Modify Matrix Inside Function
+
+Since the matrix is passed by address, changes made inside the function affect the original matrix.
+
+#include <iostream>
+using namespace std;
+
+void multiplyBy2(int arr[][3], int rows)
+{
+    for(int i = 0; i < rows; i++)
+    {
+        for(int j = 0; j < 3; j++)
+        {
+            arr[i][j] *= 2;
+        }
+    }
+}
+
+int main()
+{
+    int matrix[2][3] = {
+        {1,2,3},
+        {4,5,6}
+    };
+
+    multiplyBy2(matrix, 2);
+
+    for(int i=0;i<2;i++)
+    {
+        for(int j=0;j<3;j++)
+        {
+            cout << matrix[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+
+Output:-
+2 4 6
+8 10 12
+
+======================================================================================
+
+Why must the number of columns be specified?
+
+Suppose you have:
+
+int matrix[2][3];
+
+The compiler stores it row by row:
+
+1 2 3
+4 5 6
+
+To access matrix[i][j], the compiler calculates:
+
+Address = Base + (i × Number_of_Columns + j) × sizeof(int)
+
+Without knowing the number of columns, it cannot determine where the next row begins.
+
+Therefore, this is invalid:
+
+void display(int arr[][]);   // ❌ Error
+
+This is valid:
+
+void display(int arr[][3]);  // ✅
+
+or
+
+void display(int (*arr)[3]); // ✅
+Passing a Matrix of Any Size (C++)
+
+==============================================================================================
+
+You can also use templates so the compiler deduces the dimensions:
+
+#include <iostream>
+using namespace std;
+
+template<int ROWS, int COLS>
+void printMatrix(int (&arr)[ROWS][COLS])
+{
+    for(int i = 0; i < ROWS; i++)
+    {
+        for(int j = 0; j < COLS; j++)
+        {
+            cout << arr[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+
+int main()
+{
+    int matrix[3][4] = {
+        {1,2,3,4},
+        {5,6,7,8},
+        {9,10,11,12}
+    };
+
+    printMatrix(matrix);
+}
+
+=========================================================================================
+
+Key Points:-
+
+A 2D array is passed as a pointer to its first row.
+The number of columns is mandatory in the function parameter.
+Changes made inside the function modify the original matrix.
+int arr[][3] and int (*arr)[3] are equivalent declarations.
+Templates allow functions to work with matrices of different sizes without hardcoding dimensions.
