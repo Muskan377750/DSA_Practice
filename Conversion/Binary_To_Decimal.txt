@@ -1,0 +1,39 @@
+Binary to Decimal Conversion (Theory)
+
+A binary number is a number in the base-2 number system. It uses only two digits:
+
+0
+1
+
+A decimal number is a number in the base-10 number system. It uses digits from 0 to 9.
+
+Concept
+
+To convert a binary number to decimal, each binary digit is multiplied by the corresponding power of 2, starting from the rightmost digit with power 0.
+
+The value of each position is:
+Binary Position (Right to Left)	Power of 2	Value
+1st	2⁰	1
+2nd	2¹	2
+3rd	2²	4
+4th	2³	8
+5th	2⁴	16
+6th	2⁵	32
+
+Example 1
+
+Convert 1011₂ to decimal.
+
+Binary Digit	Power of 2	Calculation
+1	2³	1 × 8 = 8
+0	2²	0 × 4 = 0
+1	2¹	1 × 2 = 2
+1	2⁰	1 × 1 = 1
+
+Total:
+
+8 + 0 + 2 + 1 = 11
+
+So,
+
+1011₂ = 11₁₀

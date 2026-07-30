@@ -1,0 +1,47 @@
+Decimal to Binary Conversion (Theory)
+
+A decimal number is a number in the base-10 number system. It uses digits from 0 to 9.
+
+A binary number is a number in the base-2 number system. It uses only two digits:
+
+0
+1
+Concept
+
+To convert a decimal number into binary:
+
+Divide the decimal number by 2.
+Write down the remainder (either 0 or 1).
+Divide the quotient again by 2.
+Repeat until the quotient becomes 0.
+Read all the remainders from bottom to top.
+Algorithm
+Take the decimal number n.
+
+Find the remainder:
+
+remainder = n % 2
+Store the remainder.
+
+Update the number:
+
+n = n / 2
+Repeat until n = 0.
+Print the stored remainders in reverse order.
+Example 1
+
+Convert 13₁₀ to binary.
+
+Division	Quotient	Remainder
+13 ÷ 2	6	1
+6 ÷ 2	3	0
+3 ÷ 2	1	1
+1 ÷ 2	0	1
+
+Read the remainders from bottom to top:
+
+1101₂
+
+Therefore,
+
+13₁₀ = 1101₂
