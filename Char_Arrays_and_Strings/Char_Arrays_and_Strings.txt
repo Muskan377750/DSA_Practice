@@ -1,0 +1,357 @@
+In C++, character arrays (char[]) and strings (std::string) are both used to store text, but they work differently. Interviewers often ask the differences and basic operations.
+
+1. Character Array (char[])
+
+A character array is a collection of characters terminated by a null character ('\0').
+
+Example
+#include <iostream>
+using namespace std;
+
+int main() {
+    char name[] = "Muskan";
+
+    cout << name;
+
+    return 0;
+}
+Memory Representation
+Index:   0   1   2   3   4   5   6
+Value:   M   u   s   k   a   n  '\0'
+
+The null character tells the compiler where the string ends.
+
+2. Different Ways to Declare Character Arrays
+Method 1
+char name[] = "Hello";
+Method 2
+char name[6] = {'H','e','l','l','o','\0'};
+Method 3
+char name[20];
+
+cin >> name;
+3. Input in Character Arrays
+Using cin
+char name[20];
+
+cin >> name;
+
+Input
+
+Muskan Rajput
+
+Output
+
+Muskan
+
+cin stops reading at the first space.
+
+Using cin.getline()
+char name[50];
+
+cin.getline(name, 50);
+
+cout << name;
+
+Input
+
+Muskan Rajput
+
+Output
+
+Muskan Rajput
+
+Syntax
+
+cin.getline(arrayName, size);
+4. Common Character Array Functions
+
+Include
+
+#include <cstring>
+strlen()
+
+Returns the number of characters (excluding '\0').
+
+char str[] = "Coding";
+
+cout << strlen(str);
+
+Output
+
+6
+strcpy()
+
+Copies one string into another.
+
+char str1[20];
+char str2[] = "Hello";
+
+strcpy(str1, str2);
+
+cout << str1;
+
+Output
+
+Hello
+strcat()
+
+Concatenates two strings.
+
+char a[30] = "Hello ";
+char b[] = "World";
+
+strcat(a, b);
+
+cout << a;
+
+Output
+
+Hello World
+strcmp()
+
+Compares two strings.
+
+char a[] = "Apple";
+char b[] = "Apple";
+
+cout << strcmp(a, b);
+
+Output
+
+0
+
+Meaning
+
+0 → Equal
+<0 → First string is smaller
+>0 → First string is greater
+5. Access Characters
+char str[] = "Hello";
+
+cout << str[0];
+cout << str[4];
+
+Output
+
+6. Modify Character
+char str[] = "Hello";
+
+str[0] = 'Y';
+
+cout << str;
+
+Output
+
+Yello
+7. Traverse Character Array
+char str[] = "Coding";
+
+for(int i = 0; str[i] != '\0'; i++)
+{
+    cout << str[i] << " ";
+}
+
+Output
+
+C o d i n g
+8. String (std::string)
+
+A string is a class provided by the C++ Standard Library that makes handling text much easier.
+
+Include
+
+#include <string>
+
+Example
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main()
+{
+    string name = "Muskan";
+
+    cout << name;
+}
+9. Input in Strings
+Using cin
+string name;
+
+cin >> name;
+
+Stops at space.
+
+Using getline()
+string name;
+
+getline(cin, name);
+
+Reads the entire line.
+
+10. Common String Functions
+Length
+string s = "Programming";
+
+cout << s.length();
+
+Output
+
+11
+
+You can also use
+
+s.size();
+Append
+string a = "Hello";
+string b = " World";
+
+a.append(b);
+
+cout << a;
+
+Output
+
+Hello World
+
+or simply:
+
+a += b;
+Concatenate
+string a = "Good";
+string b = "Morning";
+
+cout << a + " " + b;
+
+Output
+
+Good Morning
+Access Characters
+string s = "Coding";
+
+cout << s[2];
+
+Output
+
+d
+Modify Character
+string s = "Coding";
+
+s[0] = 'L';
+
+cout << s;
+
+Output
+
+Loding
+Substring
+string s = "Programming";
+
+cout << s.substr(3,5);
+
+Output
+
+gramm
+
+Syntax
+
+string.substr(start, length);
+Find
+string s = "Programming";
+
+cout << s.find("gram");
+
+Output
+
+3
+
+If not found:
+
+string::npos
+Erase
+string s = "HelloWorld";
+
+s.erase(5,5);
+
+cout << s;
+
+Output
+
+Hello
+Insert
+string s = "Helo";
+
+s.insert(2,"ll");
+
+cout << s;
+
+Output
+
+Hello
+Reverse
+#include <algorithm>
+
+string s = "Coding";
+
+reverse(s.begin(), s.end());
+
+cout << s;
+
+Output
+
+gnidoC
+Sort
+#include <algorithm>
+
+string s = "dcab";
+
+sort(s.begin(), s.end());
+
+cout << s;
+
+Output
+
+abcd
+11. Character Array vs String
+Feature	Character Array (char[])	std::string
+Header	<cstring>	<string>
+Size	Fixed	Dynamic
+Ends with	'\0'	Managed internally
+Easy to use	No	Yes
+Memory	Manual	Automatic
+Concatenation	strcat()	+, append()
+Length	strlen()	length(), size()
+Comparison	strcmp()	==, <, >
+Input with spaces	cin.getline()	getline()
+Safety	Less safe (buffer overflow possible)	Safer
+12. When to Use Which?
+Use std::string for almost all modern C++ programs because it is safer, easier, and more feature-rich.
+Use char[] when:
+Working with legacy C code.
+Using low-level libraries that require C-style strings.
+In some embedded systems where memory control is critical.
+Interview Questions
+What is the difference between char[] and std::string?
+Why is '\0' required in a character array?
+Difference between cin and getline()?
+Difference between strlen() and sizeof()?
+
+Can char[] be assigned using = after declaration?
+
+char a[10];
+a = "Hello";   // ❌ Invalid
+
+Can a std::string be assigned using =?
+
+string s;
+s = "Hello";   // ✅ Valid
+
+What is the output of:
+
+char s[] = "Hello";
+cout << sizeof(s);
+
+Answer: 6 (5 characters + '\0').
+
+These are the concepts and operations on character arrays and strings that are most commonly tested in C++ interviews and coding assessments.
